@@ -5,7 +5,7 @@ let randomNumber = Math.floor(Math.random() * wordListLength)
 const wordInput = document.querySelector(".input-word")
 const randomWord = wordsList[randomNumber].split("")
 let hiddenWord = randomWord.map(() => "_")
-let life = 5
+let life = 2
 wordInput.value = hiddenWord
 
 const unHiddenWord = (letter, word, hiddenWord) => {
@@ -23,10 +23,9 @@ const unHiddenWord = (letter, word, hiddenWord) => {
             return character
         }
     })
-
-    if (indexsLetter.length === 0) {
+    if (indexsLetter.length === 0 && life >= 1) {
         life -= 1;
-        alert("ACABAS DE PERDER 1 VIDA")
+        alert ("ACABAS DE PERDER 1 VIDA!")
         return partialWord
     }
 
@@ -43,23 +42,26 @@ const checkWin = (word, partialWord) => {
     }
 }
 
-const checkLifes = (lifes) => {
+const checkLifes = (lifes, word) => {
     
     if(lifes === 0){
         alert ("NO TE QUEDAN MAS VIDAS!")
         buttonsLetters.forEach((button) => button.disabled = true)
+        return wordInput.value = word
     }
+        
+
 }
 
 const knowWord = () => {
     buttonsLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
-
+            
+            if (checkLifes(life, randomWord)) return
             const selectedLetter = event.target.innerText;
             const letterLower = selectedLetter.toLowerCase()
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
-            checkLifes(life)
         })
     })
 }
