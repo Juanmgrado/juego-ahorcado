@@ -37,7 +37,7 @@ const checkWin = (word, partialWord) => {
         word.length === partialWord.length &&
         word.every((character, index) => character === partialWord[index])
     ) {
-        alert("FELICITACIONES HAS GANADO!!!!")
+        alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         return buttonsLetters.forEach((button) => button.disabled = true)
     }
 }
@@ -62,6 +62,7 @@ const knowWord = () => {
             const letterLower = selectedLetter.toLowerCase()
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
+            checkWin(randomWord, hiddenWord)
         })
     })
 }
