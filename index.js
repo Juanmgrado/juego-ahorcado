@@ -1,11 +1,20 @@
 const wordsList = ["papa", "perro", "auricular", "alpargata"]
-const wordListLength = wordsList.length
 const buttonsLetters = document.querySelectorAll(".button-letter")
-let randomNumber = Math.floor(Math.random() * wordListLength)
 const wordInput = document.querySelector(".input-word")
-const randomWord = wordsList[randomNumber].split("")
-let hiddenWord = randomWord.map(() => "_")
+
 let life = 2
+
+const generateRandomWord = (list) => {
+    
+    const listLength = list.length
+    let randomNumber = Math.floor(Math.random() * listLength)
+    const randomWord = list[randomNumber].split("")
+    
+    return randomWord
+}
+
+const randomWord = generateRandomWord(wordsList)
+let hiddenWord = randomWord.map(() => "_")
 wordInput.value = hiddenWord
 
 const unHiddenWord = (letter, word, hiddenWord) => {
@@ -38,7 +47,7 @@ const checkWin = (word, partialWord) => {
         word.every((character, index) => character === partialWord[index])
     ) {
         alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
-        return buttonsLetters.forEach((button) => button.disabled = true)
+        buttonsLetters.forEach((button) => button.disabled = true)
     }
 }
 
