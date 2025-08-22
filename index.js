@@ -1,8 +1,40 @@
 const wordsList = ["papa", "perro", "auricular", "alpargata"]
 const buttonsLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
+const matchTime = document.querySelector(".input-time");
 
+
+let timeLeft = 5* 60;
 let life = 2
+let timerId; 
+
+const startCountdown = (duration) => {
+    let timeLeft = duration; 
+    const timer = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+        timeLeft--;
+
+        if (timeLeft < 0) {
+            clearInterval(timer);
+            alert("SE HA AGOTADO EL TIEMPO!");
+            buttonsLetters.forEach((button) => button.disabled = true);
+            wordInput.value = randomWord;
+        }
+
+        if (life < -1) {
+            clearInterval(timer);
+        }
+
+    }, 1000);
+
+    return timer; 
+};
+
+timerId = startCountdown(timeLeft);
 
 const generateRandomWord = (list) => {
     
@@ -15,6 +47,7 @@ const generateRandomWord = (list) => {
 
 const randomWord = generateRandomWord(wordsList)
 let hiddenWord = randomWord.map(() => "_")
+
 wordInput.value = hiddenWord
 
 const unHiddenWord = (letter, word, hiddenWord) => {
@@ -25,6 +58,7 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         return matches
     }, [])
 
+   
     let partialWord = hiddenWord.map((character, index) => {
         if (indexsLetter.includes(index)) {
             return letter
@@ -32,10 +66,17 @@ const unHiddenWord = (letter, word, hiddenWord) => {
             return character
         }
     })
+
+    
     if (indexsLetter.length === 0 && life >= 1) {
         life -= 1;
         alert ("ACABAS DE PERDER 1 VIDA!")
         return partialWord
+    }
+
+    if (indexsLetter.length > 0) {
+        clearInterval(timerId);         
+        timerId = startCountdown(5*60); 
     }
 
     return partialWord
@@ -47,6 +88,7 @@ const checkWin = (word, partialWord) => {
         word.every((character, index) => character === partialWord[index])
     ) {
         alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
+        clearInterval(timerId)
         buttonsLetters.forEach((button) => button.disabled = true)
     }
 }
@@ -67,14 +109,16 @@ const knowWord = () => {
         letter.addEventListener("click", (event) => {
             
             if (checkLifes(life, randomWord)) return
+
             const selectedLetter = event.target.innerText;
             const letterLower = selectedLetter.toLowerCase()
+
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
-            checkWin(randomWord, hiddenWord)
+            
+            if(checkWin(randomWord, hiddenWord)) return
         })
     })
 }
-
 
 knowWord()
