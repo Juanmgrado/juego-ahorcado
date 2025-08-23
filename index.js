@@ -2,12 +2,12 @@ const wordsList = ["papa", "perro", "auricular", "alpargata"]
 const buttonsLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
-
+const westedWordsInput = document.querySelector(".input-wasted")
 
 let timeLeft = 5* 60;
 let life = 2
 let timerId; 
-
+let trashWord = []
 const startCountdown = (duration) => {
     let timeLeft = duration; 
     const timer = setInterval(() => {
@@ -57,8 +57,11 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         }
         return matches
     }, [])
+console.log(trashWord);
 
-   
+   trashWord.push(letter)
+   westedWordsInput.value = trashWord
+
     let partialWord = hiddenWord.map((character, index) => {
         if (indexsLetter.includes(index)) {
             return letter
@@ -97,6 +100,7 @@ const checkLifes = (lifes, word) => {
     
     if(lifes === 0){
         alert ("NO TE QUEDAN MAS VIDAS!")
+        clearInterval(timerId)
         buttonsLetters.forEach((button) => button.disabled = true)
         return wordInput.value = word
     }
@@ -116,6 +120,11 @@ const knowWord = () => {
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
             
+             buttonsLetters.forEach(buton => {
+                if(buton.innerText === event.target.innerText)
+                    buton.disabled = true;
+            })
+
             if(checkWin(randomWord, hiddenWord)) return
         })
     })
