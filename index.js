@@ -57,7 +57,6 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         }
         return matches
     }, [])
-console.log(trashWord);
 
    trashWord.push(letter)
    westedWordsInput.value = trashWord
