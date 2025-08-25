@@ -3,11 +3,13 @@ const buttonsLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
+const onseSecond = 1000
 
-let minutesLeft = 5* 60;
+let minutesLeft = 5* 60
 let life = 2
 let timerId; 
 let trashWord = []
+
 const startCountdown = (duration) => {
     let timeLeft = duration; 
     const timer = setInterval(() => {
@@ -29,7 +31,7 @@ const startCountdown = (duration) => {
             clearInterval(timer);
         }
 
-    }, 1000);
+    }, onseSecond);
 
     return timer; 
 };
