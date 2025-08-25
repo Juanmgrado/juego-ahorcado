@@ -90,8 +90,9 @@ const unHiddenWord = (letter, word, hiddenWord) => {
     }
 
     if (indexsLetter.length > 0) {
-        timeLeft += 30; 
-}
+        clearInterval(timerId);         
+        timerId = startCountdown(minutesLeft); 
+    }
 
     return partialWord
 }
