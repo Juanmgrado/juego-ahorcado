@@ -5,7 +5,7 @@ const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const onseSecond = 1000
 
-let minutesLeft = 5* 60;
+let minutesLeft = 1* 60;
 let life = 2
 let timerId; 
 let trashWord = []
