@@ -4,7 +4,7 @@ const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 
-let timeLeft = 5* 60;
+let minutesLeft = 5* 60;
 let life = 2
 let timerId; 
 let trashWord = []
@@ -34,7 +34,7 @@ const startCountdown = (duration) => {
     return timer; 
 };
 
-timerId = startCountdown(timeLeft);
+timerId = startCountdown(minutesLeft);
 
 const generateRandomWord = (list) => {
     
@@ -128,5 +128,6 @@ const knowWord = () => {
         })
     })
 }
+
 
 knowWord()
