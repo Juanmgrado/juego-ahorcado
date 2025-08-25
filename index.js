@@ -20,7 +20,7 @@ const createCountdown = (duration, onTick, onComplete) => {
             clearInterval(timer);
             onComplete();
         }
-    }, 1000);
+    }, onseSecond);
 
     return timer;
 };
@@ -90,9 +90,8 @@ const unHiddenWord = (letter, word, hiddenWord) => {
     }
 
     if (indexsLetter.length > 0) {
-        clearInterval(timerId);         
-        timerId = startCountdown(5*60); 
-    }
+        timeLeft += 30; 
+}
 
     return partialWord
 }
