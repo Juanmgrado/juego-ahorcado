@@ -5,37 +5,48 @@ const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const onseSecond = 1000
 
-let minutesLeft = 5* 60
+let minutesLeft = 5* 60;
 let life = 2
 let timerId; 
 let trashWord = []
 
-const startCountdown = (duration) => {
+const createCountdown = (duration, onTick, onComplete) => {
     let timeLeft = duration; 
     const timer = setInterval(() => {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-
-        matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-        timeLeft--;
-
-        if (timeLeft < 0) {
+        if (timeLeft >= 0) {
+            onTick(timeLeft); 
+            timeLeft--;
+        } else {
             clearInterval(timer);
+            onComplete();
+        }
+    }, 1000);
+
+    return timer;
+};
+
+const startCountdown = (duration) => {
+    const timer = createCountdown(
+        duration,
+        (timeLeft) => { 
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+            if (life < -1) { 
+                clearInterval(timer); 
+            }
+        },
+        () => { 
             alert("SE HA AGOTADO EL TIEMPO!");
             buttonsLetters.forEach((button) => button.disabled = true);
             wordInput.value = randomWord;
         }
+    );
 
-        if (life < -1) {
-            clearInterval(timer);
-        }
-
-    }, onseSecond);
-
-    return timer; 
+    return timer;
 };
-
 timerId = startCountdown(minutesLeft);
 
 const generateRandomWord = (list) => {
