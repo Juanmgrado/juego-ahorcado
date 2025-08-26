@@ -3,7 +3,7 @@ const buttonsLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
-const onseSecond = 1000
+const oneSecond = 1000
 
 let minutesLeft = 1* 60;
 let life = 2
@@ -20,7 +20,7 @@ const createCountdown = (duration, onTick, onComplete) => {
             clearInterval(timer);
             onComplete();
         }
-    }, onseSecond);
+    }, oneSecond);
 
     return timer;
 };
