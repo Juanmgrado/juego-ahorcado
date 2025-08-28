@@ -4,8 +4,9 @@ const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const oneSecond = 1000
-
+const extraSeconds = 30 * 1000
 let minutesLeft = 1* 60;
+
 let life = 2
 let timerId; 
 let trashWord = []
