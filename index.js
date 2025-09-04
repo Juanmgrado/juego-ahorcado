@@ -119,7 +119,7 @@ const checkLifes = (lifes, word) => {
 
 }
 
-const knowWord = () => {
+const initGame = () => {
     buttonsLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
