@@ -8,7 +8,7 @@ let minutesLeft = 1* 60;
 
 let numberOfChances = 2
 let timerId = null; 
-let trashWord = []
+let letterUsed = []
 
 const createCountdown = (duration, onTick, onComplete) => {
     let timeLeft = duration; 
@@ -71,8 +71,8 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         return matches
     }, [])
 
-   trashWord.push(letter)
-   westedWordsInput.value = trashWord
+   letterUsed.push(letter)
+   westedWordsInput.value = letterUsed
 
     let partialWord = hiddenWord.map((character, index) => {
         if (indexsLetter.includes(index)) {
