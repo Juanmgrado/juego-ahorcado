@@ -7,8 +7,8 @@ const ONE_SECOND_INTERVAL = 1000
 let minutesLeft = 1* 60;
 
 let numberOfChances = 2
-let timerId; 
-let trashWord = []
+let timerId = null; 
+let letterUsed = []
 
 const createCountdown = (duration, onTick, onComplete) => {
     let timeLeft = duration; 
@@ -51,17 +51,12 @@ timerId = startCountdown(minutesLeft);
 
 const generateRandomWord = (list) => {
     
-    const listLength = list.length
-    let randomNumber = Math.floor(Math.random() * listLength)
+    let randomNumber = Math.floor(Math.random() * list.length)
     const randomWord = list[randomNumber].split("")
     
     return randomWord
 }
 
-const randomWord = generateRandomWord(wordsList)
-let hiddenWord = randomWord.map(() => "_")
-
-wordInput.value = hiddenWord
 
 const unHiddenWord = (letter, word, hiddenWord) => {
     const indexsLetter = word.reduce((matches, character, index) => {
@@ -70,10 +65,10 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         }
         return matches
     }, [])
-
-   trashWord.push(letter)
-   westedWordsInput.value = trashWord
-
+    
+    letterUsed.push(letter)
+    westedWordsInput.value = letterUsed
+    
     let partialWord = hiddenWord.map((character, index) => {
         if (indexsLetter.includes(index)) {
             return letter
@@ -81,19 +76,19 @@ const unHiddenWord = (letter, word, hiddenWord) => {
             return character
         }
     })
-
+    
     
     if (indexsLetter.length === 0 && numberOfChances >= 1) {
         numberOfChances -= 1;
         alert ("ACABAS DE PERDER 1 VIDA!")
         return partialWord
     }
-
+    
     if (indexsLetter.length > 0) {
         clearInterval(timerId);         
         timerId = startCountdown(minutesLeft); 
     }
-
+    
     return partialWord
 }
 
@@ -117,10 +112,16 @@ const checkLifes = (lifes, word) => {
         return wordInput.value = word
     }
         
-
+    
 }
 
-const knowWord = () => {
+const initGame = () => {
+    
+    const randomWord = generateRandomWord(wordsList)
+    let hiddenWord = randomWord.map(() => "_")
+    
+    wordInput.value = hiddenWord
+
     buttonsLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
@@ -143,4 +144,4 @@ const knowWord = () => {
 }
 
 
-knowWord()
+initGame()
