@@ -144,4 +144,4 @@ const initGame = () => {
 }
 
 
-knowWord()
+initGame()
