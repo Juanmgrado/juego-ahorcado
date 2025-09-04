@@ -4,7 +4,6 @@ const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
-const extraSeconds = 30 * 1000
 let minutesLeft = 1* 60;
 
 let life = 2
