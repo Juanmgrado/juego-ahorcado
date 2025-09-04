@@ -7,7 +7,7 @@ const ONE_SECOND_INTERVAL = 1000
 let minutesLeft = 1* 60;
 
 let numberOfChances = 2
-let timerId; 
+let timerId = null; 
 let trashWord = []
 
 const createCountdown = (duration, onTick, onComplete) => {
