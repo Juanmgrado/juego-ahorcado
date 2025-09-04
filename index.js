@@ -51,8 +51,7 @@ timerId = startCountdown(minutesLeft);
 
 const generateRandomWord = (list) => {
     
-    const listLength = list.length
-    let randomNumber = Math.floor(Math.random() * listLength)
+    let randomNumber = Math.floor(Math.random() * list.length)
     const randomWord = list[randomNumber].split("")
     
     return randomWord
