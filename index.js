@@ -6,7 +6,7 @@ const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
 let minutesLeft = 1* 60;
 
-let life = 2
+let numberOfChances = 2
 let timerId; 
 let trashWord = []
 
@@ -83,8 +83,8 @@ const unHiddenWord = (letter, word, hiddenWord) => {
     })
 
     
-    if (indexsLetter.length === 0 && life >= 1) {
-        life -= 1;
+    if (indexsLetter.length === 0 && numberOfChances >= 1) {
+        numberOfChances -= 1;
         alert ("ACABAS DE PERDER 1 VIDA!")
         return partialWord
     }
@@ -124,7 +124,7 @@ const knowWord = () => {
     buttonsLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
-            if (checkLifes(life, randomWord)) return
+            if (checkLifes(numberOfChances, randomWord)) return
 
             const selectedLetter = event.target.innerText;
             const letterLower = selectedLetter.toLowerCase()
