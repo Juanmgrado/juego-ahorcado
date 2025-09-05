@@ -101,7 +101,9 @@ const checkWin = (word, partialWord) => {
         alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         clearInterval(timerId)
         buttonsLetters.forEach((button) => button.disabled = true)
+        return true
     }
+    return false
 }
 
 const checkLifes = (lifes, word) => {
@@ -110,10 +112,11 @@ const checkLifes = (lifes, word) => {
         alert ("NO TE QUEDAN MAS VIDAS!")
         clearInterval(timerId)
         buttonsLetters.forEach((button) => button.disabled = true)
-        return wordInput.value = word
+        wordInput.value = word
+        return true
     }
-        
     
+    return false
 }
 
 const initGame = () => {
