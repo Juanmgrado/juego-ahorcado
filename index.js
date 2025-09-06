@@ -25,6 +25,16 @@ const createCountdown = (duration, onTick, onComplete) => {
     return timer;
 };
 
+const generateRandomWord = (list) => {
+    
+    let randomNumber = Math.floor(Math.random() * list.length)
+    const randomWord = list[randomNumber].split("")
+    
+    return randomWord
+}
+
+const randomWord = generateRandomWord(wordsList)
+
 const startCountdown = (duration) => {
     const timer = createCountdown(
         duration,
@@ -34,7 +44,7 @@ const startCountdown = (duration) => {
 
             matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
-            if (life < -1) { 
+            if (numberOfChances < -1) { 
                 clearInterval(timer); 
             }
         },
@@ -48,15 +58,6 @@ const startCountdown = (duration) => {
     return timer;
 };
 timerId = startCountdown(minutesLeft);
-
-const generateRandomWord = (list) => {
-    
-    let randomNumber = Math.floor(Math.random() * list.length)
-    const randomWord = list[randomNumber].split("")
-    
-    return randomWord
-}
-
 
 const unHiddenWord = (letter, word, hiddenWord) => {
     const indexsLetter = word.reduce((matches, character, index) => {
@@ -100,7 +101,9 @@ const checkWin = (word, partialWord) => {
         alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         clearInterval(timerId)
         buttonsLetters.forEach((button) => button.disabled = true)
+        return true
     }
+    return false
 }
 
 const checkLifes = (lifes, word) => {
@@ -109,15 +112,15 @@ const checkLifes = (lifes, word) => {
         alert ("NO TE QUEDAN MAS VIDAS!")
         clearInterval(timerId)
         buttonsLetters.forEach((button) => button.disabled = true)
-        return wordInput.value = word
+        wordInput.value = word
+        return true
     }
-        
     
+    return false
 }
 
 const initGame = () => {
     
-    const randomWord = generateRandomWord(wordsList)
     let hiddenWord = randomWord.map(() => "_")
     
     wordInput.value = hiddenWord
