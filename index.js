@@ -1,5 +1,5 @@
 const wordsList = ["papa", "perro", "auricular", "alpargata"]
-const buttonsLetters = document.querySelectorAll(".button-letter")
+const letterButton = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
 const restartButton = document.querySelector(".restart-button")
 const matchTime = document.querySelector(".input-time");
@@ -51,7 +51,7 @@ const startCountdown = (duration) => {
         },
         () => { 
             alert("SE HA AGOTADO EL TIEMPO!");
-            buttonsLetters.forEach((button) => button.disabled = true);
+            letterButton.forEach((button) => button.disabled = true);
             wordInput.value = randomWord;
         }
     );
@@ -100,7 +100,7 @@ const checkWin = (word, partialWord) => {
     ) {
         alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         clearInterval(timerId)
-        buttonsLetters.forEach((button) => button.disabled = true)
+        letterButton.forEach((button) => button.disabled = true)
         return true
     }
     return false
@@ -111,7 +111,7 @@ const checkLifes = (lifes, word) => {
     if(lifes === 0){
         alert ("NO TE QUEDAN MAS VIDAS!")
         clearInterval(timerId)
-        buttonsLetters.forEach((button) => button.disabled = true)
+        letterButton.forEach((button) => button.disabled = true)
         wordInput.value = word
         return true
     }
@@ -127,7 +127,7 @@ const initGame = () => {
     
     wordInput.value = hiddenWord
     
-    buttonsLetters.forEach((letter) => {
+    letterButton.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
             if (checkLifes(numberOfChances, randomWord)) return
@@ -138,7 +138,7 @@ const initGame = () => {
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
             
-            buttonsLetters.forEach(buton => {
+            letterButton.forEach(buton => {
                 if(buton.innerText === event.target.innerText)
                     buton.disabled = true;
             })
@@ -162,7 +162,7 @@ const restartGame = () => {
 
     wordInput.value = hiddenWord
     
-    buttonsLetters.forEach(buton => {
+    letterButton.forEach(buton => {
         buton.disabled = false;
     })
      
