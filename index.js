@@ -171,8 +171,6 @@ const restartGame = () => {
  
 }
 
-restartButton.addEventListener("click", () => {    
-    restartGame()
-})
+restartButton.addEventListener("click", (restartGame))
 
 initGame()
