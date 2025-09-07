@@ -154,7 +154,8 @@ const initGame = () => {
     })
 }
 
-restartButton.addEventListener("click", () => {    
+const restartGame = () => {
+    
     numberOfChances = NUMBER_OF_CHANCES
     
     randomWord = generateRandomWord(wordsList)
@@ -174,6 +175,10 @@ restartButton.addEventListener("click", () => {
     clearInterval(timerId)
     timerId = startCountdown(minutesLeft)
  
+}
+
+restartButton.addEventListener("click", () => {    
+    restartGame()
 })
 
 initGame()
