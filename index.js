@@ -35,12 +35,6 @@ const generateRandomWord = (list) => {
     return randomWord
 }
 
-const hideRandomWord = (word) => {
-    
-    const secretWord = word.map(() => "_")
-    
-    return secretWord
-}
 
 const startCountdown = (duration) => {
     const timer = createCountdown(
@@ -126,7 +120,7 @@ const checkLifes = (lifes, word) => {
 }
 
 let randomWord = generateRandomWord(wordsList)
-let hiddenWord = hideRandomWord(randomWord)
+let hiddenWord = randomWord.map(() => "_")
 
 const initGame = () => {
     timerId = startCountdown(minutesLeft);
@@ -164,7 +158,7 @@ const restartGame = () => {
     
     westedWordsInput.value = letterUsed
 
-    hiddenWord = hideRandomWord(randomWord)
+    hiddenWord = randomWord.map(() => "_")
 
     wordInput.value = hiddenWord
     
