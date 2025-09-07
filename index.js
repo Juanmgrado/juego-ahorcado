@@ -4,9 +4,10 @@ const wordInput = document.querySelector(".input-word")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
+const NUMBER_OF_CHANCES = 2
 let minutesLeft = 1* 60;
 
-let numberOfChances = 2
+let numberOfChances = NUMBER_OF_CHANCES
 let timerId = null; 
 let letterUsed = []
 
@@ -21,7 +22,7 @@ const createCountdown = (duration, onTick, onComplete) => {
             onComplete();
         }
     }, ONE_SECOND_INTERVAL);
-
+    
     return timer;
 };
 
@@ -33,7 +34,12 @@ const generateRandomWord = (list) => {
     return randomWord
 }
 
-const randomWord = generateRandomWord(wordsList)
+const hideRandomWord = (word) => {
+    
+    const secretWord = word.map(() => "_")
+    
+    return secretWord
+}
 
 const startCountdown = (duration) => {
     const timer = createCountdown(
@@ -41,9 +47,9 @@ const startCountdown = (duration) => {
         (timeLeft) => { 
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-
+            
             matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
+            
             if (numberOfChances < -1) { 
                 clearInterval(timer); 
             }
@@ -54,10 +60,9 @@ const startCountdown = (duration) => {
             wordInput.value = randomWord;
         }
     );
-
+    
     return timer;
 };
-timerId = startCountdown(minutesLeft);
 
 const unHiddenWord = (letter, word, hiddenWord) => {
     const indexsLetter = word.reduce((matches, character, index) => {
@@ -119,32 +124,33 @@ const checkLifes = (lifes, word) => {
     return false
 }
 
+let randomWord = generateRandomWord(wordsList)
+let hiddenWord = hideRandomWord(randomWord)
+
 const initGame = () => {
-    
-    let hiddenWord = randomWord.map(() => "_")
+    timerId = startCountdown(minutesLeft);
     
     wordInput.value = hiddenWord
-
+    
     buttonsLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
             if (checkLifes(numberOfChances, randomWord)) return
-
+            
             const selectedLetter = event.target.innerText;
             const letterLower = selectedLetter.toLowerCase()
-
+            
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
             
-             buttonsLetters.forEach(buton => {
+            buttonsLetters.forEach(buton => {
                 if(buton.innerText === event.target.innerText)
                     buton.disabled = true;
             })
-
+            
             if(checkWin(randomWord, hiddenWord)) return
         })
     })
 }
-
 
 initGame()
