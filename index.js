@@ -1,6 +1,7 @@
 const wordsList = ["papa", "perro", "auricular", "alpargata"]
 const buttonsLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
+const restartButton = document.querySelector(".restart-button")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
@@ -152,5 +153,27 @@ const initGame = () => {
         })
     })
 }
+
+restartButton.addEventListener("click", () => {    
+    numberOfChances = NUMBER_OF_CHANCES
+    
+    randomWord = generateRandomWord(wordsList)
+    
+    letterUsed = []
+    
+    westedWordsInput.value = letterUsed
+
+    hiddenWord = hideRandomWord(randomWord)
+
+    wordInput.value = hiddenWord
+    
+    buttonsLetters.forEach(buton => {
+        buton.disabled = false;
+    })
+     
+    clearInterval(timerId)
+    timerId = startCountdown(minutesLeft)
+ 
+})
 
 initGame()
