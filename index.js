@@ -5,10 +5,9 @@ const restartButton = document.querySelector(".restart-button")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
-const NUMBER_OF_CHANCES = 2
 let minutesLeft = 1* 60;
 
-let numberOfChances = NUMBER_OF_CHANCES
+let numberOfChances = 3
 let timerId = null; 
 let letterUsed = []
 
@@ -150,7 +149,7 @@ const initGame = () => {
 
 const restartGame = () => {
     
-    numberOfChances = NUMBER_OF_CHANCES
+    numberOfChances = 3
     
     randomWord = generateRandomWord(wordsList)
     
