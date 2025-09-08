@@ -1,16 +1,17 @@
 
 const lettersContainer = document.querySelector(".letters-container")
 
-const alphabetic = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+const ALPHABETIC = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 
+    "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" 
+]
 
-const letters = alphabetic.split("")
-
-letters.map(letter => {
+ALPHABETIC.map(letter => {
     
-    const letterButton = document.createElement("button")
+    const buttonLetters = document.createElement("button")
     
-    letterButton.className = "button-letter"
-    letterButton.innerText = letter
+    buttonLetters.className = "button-letter"
+    buttonLetters.innerText = letter
 
-    lettersContainer.appendChild(letterButton)
+    lettersContainer.appendChild(buttonLetters)
 })
