@@ -1,12 +1,13 @@
 const wordsList = ["papa", "perro", "auricular", "alpargata"]
-const buttonsLetters = document.querySelectorAll(".button-letter")
+const buttonLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
+const restartButton = document.querySelector(".restart-button")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
 let minutesLeft = 1* 60;
 
-let numberOfChances = 2
+let numberOfChances = 3
 let timerId = null; 
 let letterUsed = []
 
@@ -21,7 +22,7 @@ const createCountdown = (duration, onTick, onComplete) => {
             onComplete();
         }
     }, ONE_SECOND_INTERVAL);
-
+    
     return timer;
 };
 
@@ -33,7 +34,6 @@ const generateRandomWord = (list) => {
     return randomWord
 }
 
-const randomWord = generateRandomWord(wordsList)
 
 const startCountdown = (duration) => {
     const timer = createCountdown(
@@ -41,23 +41,22 @@ const startCountdown = (duration) => {
         (timeLeft) => { 
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-
+            
             matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
+            
             if (numberOfChances < -1) { 
                 clearInterval(timer); 
             }
         },
         () => { 
             alert("SE HA AGOTADO EL TIEMPO!");
-            buttonsLetters.forEach((button) => button.disabled = true);
+            buttonLetters.forEach((button) => button.disabled = true);
             wordInput.value = randomWord;
         }
     );
-
+    
     return timer;
 };
-timerId = startCountdown(minutesLeft);
 
 const unHiddenWord = (letter, word, hiddenWord) => {
     const indexsLetter = word.reduce((matches, character, index) => {
@@ -100,7 +99,7 @@ const checkWin = (word, partialWord) => {
     ) {
         alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         clearInterval(timerId)
-        buttonsLetters.forEach((button) => button.disabled = true)
+        buttonLetters.forEach((button) => button.disabled = true)
         return true
     }
     return false
@@ -111,7 +110,7 @@ const checkLifes = (lifes, word) => {
     if(lifes === 0){
         alert ("NO TE QUEDAN MAS VIDAS!")
         clearInterval(timerId)
-        buttonsLetters.forEach((button) => button.disabled = true)
+        buttonLetters.forEach((button) => button.disabled = true)
         wordInput.value = word
         return true
     }
@@ -119,32 +118,58 @@ const checkLifes = (lifes, word) => {
     return false
 }
 
+let randomWord = generateRandomWord(wordsList)
+let hiddenWord = randomWord.map(() => "_")
+
 const initGame = () => {
-    
-    let hiddenWord = randomWord.map(() => "_")
+    timerId = startCountdown(minutesLeft);
     
     wordInput.value = hiddenWord
-
-    buttonsLetters.forEach((letter) => {
+    
+    buttonLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
             if (checkLifes(numberOfChances, randomWord)) return
-
+            
             const selectedLetter = event.target.innerText;
             const letterLower = selectedLetter.toLowerCase()
-
+            
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
             
-             buttonsLetters.forEach(buton => {
+            buttonLetters.forEach(buton => {
                 if(buton.innerText === event.target.innerText)
                     buton.disabled = true;
             })
-
+            
             if(checkWin(randomWord, hiddenWord)) return
         })
     })
 }
 
+const restartGame = () => {
+    
+    numberOfChances = 3
+    
+    randomWord = generateRandomWord(wordsList)
+    
+    letterUsed = []
+    
+    westedWordsInput.value = letterUsed
+
+    hiddenWord = randomWord.map(() => "_")
+
+    wordInput.value = hiddenWord
+    
+    buttonLetters.forEach(buton => {
+        buton.disabled = false;
+    })
+     
+    clearInterval(timerId)
+    timerId = startCountdown(minutesLeft)
+ 
+}
+
+restartButton.addEventListener("click", (restartGame))
 
 initGame()
