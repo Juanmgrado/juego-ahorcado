@@ -49,7 +49,6 @@ const startCountdown = (duration) => {
             }
         },
         () => { 
-            alert("SE HA AGOTADO EL TIEMPO!");
             buttonLetters.forEach((button) => button.disabled = true);
             wordInput.value = randomWord;
         }
@@ -80,7 +79,6 @@ const unHiddenWord = (letter, word, hiddenWord) => {
     
     if (indexsLetter.length === 0 && numberOfChances >= 1) {
         numberOfChances -= 1;
-        alert ("ACABAS DE PERDER 1 VIDA!")
         return partialWord
     }
     
@@ -97,7 +95,6 @@ const checkWin = (word, partialWord) => {
         word.length === partialWord.length &&
         word.every((character, index) => character === partialWord[index])
     ) {
-        alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
         return true
@@ -108,7 +105,6 @@ const checkWin = (word, partialWord) => {
 const checkLifes = (lifes, word) => {
     
     if(lifes === 0){
-        alert ("NO TE QUEDAN MAS VIDAS!")
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
         wordInput.value = word
