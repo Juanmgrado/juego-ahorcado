@@ -12,11 +12,15 @@ body {
 }
 
 .inputs-container {
+    padding: 1em;
     display: flex;
-    gap: 10em;
+    gap: 9em;
     align-items: center;
 }
 
+.input-word{
+    text-align: center;
+}
 .letters-container {
     display: grid;
     grid-template-columns: repeat(10, 1fr); 
