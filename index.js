@@ -1,16 +1,30 @@
 const wordsList = ["papa", "perro", "auricular", "alpargata"]
+const dollyImgs = ["./imgs/hangman0.png", "./imgs/hangman1.png", "./imgs/hangman2.png", "./imgs/hangman3.png", "./imgs/hangman4.png"]
+const dollyContainer = document.querySelector(".dolly-container")
 const buttonLetters = document.querySelectorAll(".button-letter")
 const wordInput = document.querySelector(".input-word")
 const restartButton = document.querySelector(".restart-button")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
-let minutesLeft = 1* 60;
+const LAST_INDEX_OFFSET = 1
+let minutesLeft = 1* 60
 
-let numberOfChances = 3
+let numberOfChances = 4
 let timerId = null; 
 let letterUsed = []
 
+const insertDolly = (chances) => {
+  dollyContainer.innerHTML = ""
+
+  const index = dollyImgs.length - LAST_INDEX_OFFSET - chances
+
+  const dollyImg = document.createElement("img")
+  dollyImg.src = dollyImgs[index]
+  dollyImg.alt = "hangman"
+
+  dollyContainer.appendChild(dollyImg)
+}
 const createCountdown = (duration, onTick, onComplete) => {
     let timeLeft = duration; 
     const timer = setInterval(() => {
@@ -49,7 +63,6 @@ const startCountdown = (duration) => {
             }
         },
         () => { 
-            alert("SE HA AGOTADO EL TIEMPO!");
             buttonLetters.forEach((button) => button.disabled = true);
             wordInput.value = randomWord;
         }
@@ -77,18 +90,16 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         }
     })
     
-    
-    if (indexsLetter.length === 0 && numberOfChances >= 1) {
-        numberOfChances -= 1;
-        alert ("ACABAS DE PERDER 1 VIDA!")
-        return partialWord
+    if (indexsLetter.length === 0) {
+    numberOfChances -= 1;
+    insertDolly(numberOfChances);
+
+    if (numberOfChances <= 0) { 
+        buttonLetters.forEach((button) => button.disabled = true);
+        wordInput.value = randomWord.join("");
+        clearInterval(timerId);
     }
-    
-    if (indexsLetter.length > 0) {
-        clearInterval(timerId);         
-        timerId = startCountdown(minutesLeft); 
-    }
-    
+}
     return partialWord
 }
 
@@ -97,7 +108,6 @@ const checkWin = (word, partialWord) => {
         word.length === partialWord.length &&
         word.every((character, index) => character === partialWord[index])
     ) {
-        alert(`FELICITACIONES HAS GANADO, LA PALABRA ES: ${word.join("").toUpperCase()}`)
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
         return true
@@ -108,7 +118,6 @@ const checkWin = (word, partialWord) => {
 const checkLifes = (lifes, word) => {
     
     if(lifes === 0){
-        alert ("NO TE QUEDAN MAS VIDAS!")
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
         wordInput.value = word
@@ -123,20 +132,21 @@ let hiddenWord = randomWord.map(() => "_")
 
 const initGame = () => {
     timerId = startCountdown(minutesLeft);
+    insertDolly(numberOfChances)
+    
+    if (checkLifes(numberOfChances, randomWord)) return
     
     wordInput.value = hiddenWord
     
     buttonLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
             
-            if (checkLifes(numberOfChances, randomWord)) return
-            
             const selectedLetter = event.target.innerText;
             const letterLower = selectedLetter.toLowerCase()
             
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
             wordInput.value = hiddenWord  
-            
+                        
             buttonLetters.forEach(buton => {
                 if(buton.innerText === event.target.innerText)
                     buton.disabled = true;
@@ -149,16 +159,18 @@ const initGame = () => {
 
 const restartGame = () => {
     
-    numberOfChances = 3
+    numberOfChances = 4
+    
+    insertDolly(numberOfChances)
     
     randomWord = generateRandomWord(wordsList)
     
     letterUsed = []
     
     westedWordsInput.value = letterUsed
-
+    
     hiddenWord = randomWord.map(() => "_")
-
+    
     wordInput.value = hiddenWord
     
     buttonLetters.forEach(buton => {
@@ -167,7 +179,7 @@ const restartGame = () => {
      
     clearInterval(timerId)
     timerId = startCountdown(minutesLeft)
- 
+    
 }
 
 restartButton.addEventListener("click", (restartGame))
