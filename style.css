@@ -34,7 +34,6 @@ input {
 }
 
 input:disabled {
-    background-color: #e5e7eb; 
     border-color: #d1d5db;
     color: #9ca3af;
     cursor: not-allowed;
@@ -77,8 +76,8 @@ img:hover {
 }
 
 button {
-    background-color: #3b82f6; 
-    color: #fff; 
+    background-color: #ff8d2f; 
+    color: #9ca3af; 
     font-family: 'Georgia', serif; 
     font-weight: bold;
     border: none; 
@@ -89,7 +88,7 @@ button {
 }
 
 button:hover {
-    background-color: #2563eb; 
+    background-color: #0346ba; 
     transform: translateY(-2px); 
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
