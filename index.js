@@ -7,7 +7,8 @@ const restartButton = document.querySelector(".restart-button")
 const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const ONE_SECOND_INTERVAL = 1000
-let minutesLeft = 1* 60;
+const LAST_INDEX_OFFSET = 1
+let minutesLeft = 1* 60
 
 let numberOfChances = 4
 let timerId = null; 
@@ -16,7 +17,7 @@ let letterUsed = []
 const insertDolly = (chances) => {
   dollyContainer.innerHTML = ""
 
-  const index = dollyImgs.length - 1 - chances
+  const index = dollyImgs.length - LAST_INDEX_OFFSET - chances
 
   const dollyImg = document.createElement("img")
   dollyImg.src = dollyImgs[index]
