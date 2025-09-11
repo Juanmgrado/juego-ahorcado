@@ -13,7 +13,7 @@ body {
 .inputs-container {
     padding: 1em;
     display: flex;
-    gap: 9em;
+    gap: 5em;
     align-items: center;
 }
 

@@ -64,7 +64,7 @@ const startCountdown = (duration) => {
         },
         () => { 
             buttonLetters.forEach((button) => button.disabled = true);
-            wordInput.value = randomWord;
+            wordInput.value = randomWord.join("");
         }
     );
     
@@ -120,7 +120,7 @@ const checkLifes = (lifes, word) => {
     if(lifes === 0){
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
-        wordInput.value = word
+        wordInput.value = word.join("")
         return true
     }
     
