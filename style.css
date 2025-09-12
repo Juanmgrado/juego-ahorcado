@@ -15,6 +15,7 @@ body {
     display: flex;
     gap: 5em;
     align-items: center;
+    font-family: 'Georgia', serif; 
 }
 
 .input-word {
@@ -75,6 +76,12 @@ img:hover {
     box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 
+.wrong-letter{
+    color: red;
+    font-size: 0.5em;
+    min-height: 1.4em;
+}
+
 button {
     background-color: #ff8d2f; 
     color: #9ca3af; 
@@ -104,4 +111,23 @@ button:disabled {
     cursor: not-allowed; 
     box-shadow: none; 
     transform: none; 
+}
+
+.modal-congratulations {
+    margin: 3em;
+    padding: 1em;
+    position: absolute;
+    background-color: #fef3c7;
+    border: 2px solid #facc15;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    width: 20em;    
+    min-height: 12em; 
+    text-align: center;
 }
