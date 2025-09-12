@@ -9,7 +9,7 @@ const matchTime = document.querySelector(".input-time");
 const westedWordsInput = document.querySelector(".input-wasted")
 const modalsDiv = document.createElement("div")
 const ONE_SECOND_INTERVAL = 1000
-const TWO_SECOND_TIMEOUT = 3000
+const THREE_SECOND_TIMEOUT = 3000
 const LAST_INDEX_OFFSET = 1
 let minutesLeft = 1* 60
 let numberOfChances = 4
@@ -22,7 +22,7 @@ const letterWrongAlert = (check) => {
         
         setTimeout(() => {
             wrongLetterTag.innerText = ""
-        },  TWO_SECOND_TIMEOUT )
+        },  THREE_SECOND_TIMEOUT )
     }
 }
 
