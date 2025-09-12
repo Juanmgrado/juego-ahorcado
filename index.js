@@ -64,7 +64,7 @@ const startCountdown = (duration) => {
         },
         () => { 
             buttonLetters.forEach((button) => button.disabled = true);
-            wordInput.value = randomWord;
+            wordInput.value = randomWord.join("");
         }
     );
     
@@ -120,7 +120,7 @@ const checkLifes = (lifes, word) => {
     if(lifes === 0){
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
-        wordInput.value = word
+        wordInput.value = word.join("")
         return true
     }
     
@@ -136,7 +136,7 @@ const initGame = () => {
     
     if (checkLifes(numberOfChances, randomWord)) return
     
-    wordInput.value = hiddenWord
+    wordInput.value = hiddenWord.join("")
     
     buttonLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
@@ -145,7 +145,7 @@ const initGame = () => {
             const letterLower = selectedLetter.toLowerCase()
             
             hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
-            wordInput.value = hiddenWord  
+            wordInput.value = hiddenWord.join("")  
                         
             buttonLetters.forEach(buton => {
                 if(buton.innerText === event.target.innerText)
@@ -171,7 +171,7 @@ const restartGame = () => {
     
     hiddenWord = randomWord.map(() => "_")
     
-    wordInput.value = hiddenWord
+    wordInput.value = hiddenWord.join("")
     
     buttonLetters.forEach(buton => {
         buton.disabled = false;
