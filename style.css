@@ -132,3 +132,50 @@ button:disabled {
     min-height: 12em; 
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 5%;
+        gap: 0.5em;
+    }
+
+    .inputs-container {
+        flex-direction: column;
+        gap: 1em;
+        width: 90%;
+    }
+
+    .input-word {
+        width: 100%;
+    }
+
+    input {
+        width: 100%;
+        font-size: 1.2em;
+    }
+
+    .letters-container {
+        grid-template-columns: repeat(5, 1fr); /* Menos columnas en móvil */
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    img {
+        height: auto;
+        width: 70%; /* Escalable en móviles */
+        max-width: 250px;
+    }
+
+    button {
+        width: 100%;
+        padding: 0.8em;
+        font-size: 1.1em;
+    }
+
+    .modal-congratulations {
+        width: 90%;
+        margin: 1em;
+        padding: 1em;
+        font-size: 0.9em;
+    }
+}
