@@ -155,14 +155,17 @@ button:disabled {
     }
 
     .letters-container {
-        grid-template-columns: repeat(5, 1fr); /* Menos columnas en móvil */
+        grid-template-columns: repeat(7, 1fr); 
         width: 90%;
         margin: 0 auto;
     }
-
+    .dolly-container{
+        display: flex;
+        justify-content: center;
+    }
     img {
-        height: auto;
-        width: 70%; /* Escalable en móviles */
+        height: 10em;
+        width: 80%;
         max-width: 250px;
     }
 
