@@ -1,4 +1,4 @@
-const wordsList = ["papa", "perro", "auricular", "alpargata"]
+const wordsList = ["potatoe", "dog", "headphone", "shoe"]
 const wrongLetterTag = document.querySelector(".wrong-letter")
 const dollyImgs = ["./imgs/hangman0.png", "./imgs/hangman1.png", "./imgs/hangman2.png", "./imgs/hangman3.png", "./imgs/hangman4.png"]
 const dollyContainer = document.querySelector(".dolly-container")
@@ -18,7 +18,7 @@ let letterUsed = []
 
 const letterWrongAlert = (check) => {
     if (check.length === 0) {
-        wrongLetterTag.innerText = "❌ Letra incorrecta"
+        wrongLetterTag.innerText = "❌ Wrong letter"
         
         setTimeout(() => {
             wrongLetterTag.innerText = ""
@@ -35,10 +35,10 @@ const congratulationsWin = () => {
 
     modalsDiv.innerHTML = ""
     modalsDiv.classList = "modal-congratulations"
-    congratTag.innerHTML = "HAS GANADO!!"
-    wordTag.innerHTML = `La palabra secreta es: ${randomWord.join("")}`
+    congratTag.innerHTML = "YOU WIN!!"
+    wordTag.innerHTML = `The secret word is: ${randomWord.join("")}`
     
-    buttonOk.innerHTML = "Aceptar"
+    buttonOk.innerHTML = "Acept"
     buttonOk.addEventListener("click", () => {
         modalsDiv.remove()
     })
@@ -59,10 +59,10 @@ const timeoutAlert = () => {
 
     modalsDiv.innerHTML = ""
     modalsDiv.classList = "modal-congratulations"
-    congratTag.innerHTML = "SE HA ACABADO EL TIEMPO!!"
-    wordTag.innerHTML = `La palabra secreta era: ${randomWord.join("")}`
+    congratTag.innerHTML = "TIME OUT!!"
+    wordTag.innerHTML = `The secret word was: ${randomWord.join("")}`
     
-    buttonOk.innerHTML = "Aceptar"
+    buttonOk.innerHTML = "Acept"
     buttonOk.addEventListener("click", () => {
         modalsDiv.remove()
     })
