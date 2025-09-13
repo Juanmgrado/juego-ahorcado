@@ -201,7 +201,7 @@ const initGame = () => {
     
     if (checkLifes(numberOfChances, randomWord)) return
     
-    wordInput.value = hiddenWord.join("")
+    wordInput.value = hiddenWord
     
     buttonLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
