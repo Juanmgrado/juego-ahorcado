@@ -1,4 +1,4 @@
-const wordsList = ["potatoe", "dog", "headphone", "shoe"]
+const wordsList = ["ab"]
 const wrongLetterTag = document.querySelector(".wrong-letter")
 const dollyImgs = ["./imgs/hangman0.png", "./imgs/hangman1.png", "./imgs/hangman2.png", "./imgs/hangman3.png", "./imgs/hangman4.png"]
 const dollyContainer = document.querySelector(".dolly-container")
@@ -11,10 +11,35 @@ const modalsDiv = document.createElement("div")
 const ONE_SECOND_INTERVAL = 1000
 const THREE_SECOND_TIMEOUT = 3000
 const LAST_INDEX_OFFSET = 1
-let minutesLeft = 1* 60
+let minutesLeft = 10
 let numberOfChances = 4
-let timerId = null; 
+let timerId = null;
 let letterUsed = []
+
+const timerDisplay = () => {
+
+    if (timerId) clearInterval(timerId);
+
+    updateDisplay(minutesLeft);
+
+    timerId = setInterval(() => {
+        if (minutesLeft <= 0) {
+            clearInterval(timerId);
+            timeoutAlert()
+            return;
+        }
+
+        minutesLeft--;
+        updateDisplay(minutesLeft);
+    }, 1000);
+};
+
+const updateDisplay = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
 
 const letterWrongAlert = (check) => {
     if (check.length === 0) {
@@ -50,29 +75,29 @@ const congratulationsWin = () => {
     
 }
 
-const timeoutAlert = () => {
-    
-    const mainContainer = document.querySelector("body")
-    const congratTag = document.createElement("h2")
-    const wordTag = document.createElement("h3")
-    const buttonOk = document.createElement("button")
+    const timeoutAlert = () => {
+        
+        const mainContainer = document.querySelector("body")
+        const congratTag = document.createElement("h2")
+        const wordTag = document.createElement("h3")
+        const buttonOk = document.createElement("button")
 
-    modalsDiv.innerHTML = ""
-    modalsDiv.classList = "modal-congratulations"
-    congratTag.innerHTML = "TIME OUT!!"
-    wordTag.innerHTML = `The secret word was: ${randomWord.join("")}`
-    
-    buttonOk.innerHTML = "Acept"
-    buttonOk.addEventListener("click", () => {
-        modalsDiv.remove()
-    })
-    
-    modalsDiv.appendChild(congratTag)
-    modalsDiv.appendChild(wordTag)
-    modalsDiv.appendChild(buttonOk)
-    mainContainer.appendChild(modalsDiv)
-    
-}
+        modalsDiv.innerHTML = ""
+        modalsDiv.classList = "modal-congratulations"
+        congratTag.innerHTML = "TIME OUT!!"
+        wordTag.innerHTML = `The secret word was: ${randomWord.join("")}`
+        
+        buttonOk.innerHTML = "Acept"
+        buttonOk.addEventListener("click", () => {
+            modalsDiv.remove()
+        })
+        
+        modalsDiv.appendChild(congratTag)
+        modalsDiv.appendChild(wordTag)
+        modalsDiv.appendChild(buttonOk)
+        mainContainer.appendChild(modalsDiv)
+        
+    }
 
 const insertDolly = (chances) => {
   dollyContainer.innerHTML = ""
@@ -86,21 +111,6 @@ const insertDolly = (chances) => {
   dollyContainer.appendChild(dollyImg)
 }
 
-const createCountdown = (duration, onTick, onComplete) => {
-    let timeLeft = duration; 
-    const timer = setInterval(() => {
-        if (timeLeft >= 0) {
-            onTick(timeLeft); 
-            timeLeft--;
-        } else {
-            clearInterval(timer);
-            onComplete();
-        }
-    }, ONE_SECOND_INTERVAL);
-    
-    return timer;
-};
-
 const generateRandomWord = (list) => {
     
     let randomNumber = Math.floor(Math.random() * list.length)
@@ -109,30 +119,6 @@ const generateRandomWord = (list) => {
     return randomWord
 }
 
-
-const startCountdown = (duration) => {
-    const timer = createCountdown(
-        duration,
-        (timeLeft) => { 
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            
-            matchTime.value = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-            
-            if (numberOfChances <= 0) { 
-                clearInterval(timer); 
-            }
-        },
-        () => {
-            timeoutAlert() 
-            buttonLetters.forEach((button) => button.disabled = true);
-            wordInput.value = randomWord.join("");
-        }
-    );
-    
-    return timer;
-};
-
 const unHiddenWord = (letter, word, hiddenWord) => {
     const indexsLetter = word.reduce((matches, character, index) => {
         if (character === letter) {
@@ -140,10 +126,10 @@ const unHiddenWord = (letter, word, hiddenWord) => {
         }
         return matches
     }, [])
-    
+
     letterUsed.push(letter)
     westedWordsInput.value = letterUsed
-    
+
     let partialWord = hiddenWord.map((character, index) => {
         if (indexsLetter.includes(index)) {
             return letter
@@ -151,27 +137,33 @@ const unHiddenWord = (letter, word, hiddenWord) => {
             return character
         }
     })
-    
+
     if (indexsLetter.length === 0) {
-    numberOfChances -= 1;
-    insertDolly(numberOfChances)
-    letterWrongAlert(indexsLetter)
-    
-    if (numberOfChances <= 0) { 
-        buttonLetters.forEach((button) => button.disabled = true);
-        wordInput.value = randomWord.join("");
-        clearInterval(timerId);
+        numberOfChances -= 1
+        insertDolly(numberOfChances)
+        letterWrongAlert(indexsLetter)
+
+        if (numberOfChances <= 0) { 
+            buttonLetters.forEach((button) => button.disabled = true)
+            wordInput.value = randomWord.join("")
+            clearInterval(timerId)
+        }
     }
+
+    if (indexsLetter.length > 0) {
+        minutesLeft += 10
+    }
+
+    return partialWord
 }
-return partialWord
-}
+
 
 const checkWin = (word, partialWord) => {
     if (
         word.length === partialWord.length &&
         word.every((character, index) => character === partialWord[index])
     ) {
-        clearInterval(timerId)
+        minutesLeft = 0
         buttonLetters.forEach((button) => button.disabled = true)
         congratulationsWin(word)
         return true
@@ -196,58 +188,48 @@ let hiddenWord = randomWord.map(() => "_")
 
 const initGame = () => {
     
-    timerId = startCountdown(minutesLeft);
-    insertDolly(numberOfChances)
-    
-    if (checkLifes(numberOfChances, randomWord)) return
-    
-    wordInput.value = hiddenWord
-    
+    timerDisplay();
+    insertDolly(numberOfChances);
+
+    if (checkLifes(numberOfChances, randomWord)) return;
+
+    wordInput.value = hiddenWord;
+
     buttonLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
-            
-            const selectedLetter = event.target.innerText;
-            const letterLower = selectedLetter.toLowerCase()
-            
-            hiddenWord = unHiddenWord(letterLower, randomWord, hiddenWord)
-            wordInput.value = hiddenWord.join("")  
-                        
+            const selectedLetter = event.target.innerText.toLowerCase();
+            hiddenWord = unHiddenWord(selectedLetter, randomWord, hiddenWord);
+            wordInput.value = hiddenWord.join(" ");
+
             buttonLetters.forEach(buton => {
-                if(buton.innerText === event.target.innerText)
-                    buton.disabled = true;
-            })
-            
-            if(checkWin(randomWord, hiddenWord)) return
-        })
-    })
-}
+                if (buton.innerText === event.target.innerText) buton.disabled = true;
+            });
+
+            if (checkWin(randomWord, hiddenWord)) return;
+        });
+    });
+};
 
 const restartGame = () => {
-    
-    numberOfChances = 4
-    
-    insertDolly(numberOfChances)
-    
-    randomWord = generateRandomWord(wordsList)
-    
-    letterUsed = []
-    
-    westedWordsInput.value = letterUsed
-    
-    hiddenWord = randomWord.map(() => "_")
-    
-    wordInput.value = hiddenWord.join("")
-    
-    buttonLetters.forEach(buton => {
-        buton.disabled = false;
-    })
-     
-    modalsDiv.remove()
-    clearInterval(timerId)
-    timerId = startCountdown(minutesLeft)
-    
-}
+    if (timerId) clearInterval(timerId);
 
-restartButton.addEventListener("click", (restartGame))
+    minutesLeft = 10;
+    numberOfChances = 4;
+    insertDolly(numberOfChances);
 
-initGame()
+    randomWord = generateRandomWord(wordsList);
+    letterUsed = [];
+    westedWordsInput.value = letterUsed;
+
+    hiddenWord = randomWord.map(() => "_");
+    wordInput.value = hiddenWord.join(" ");
+
+    buttonLetters.forEach(buton => buton.disabled = false);
+    modalsDiv.remove();
+
+    timerDisplay();
+};
+
+restartButton.addEventListener("click", restartGame);
+
+initGame();
