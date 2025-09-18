@@ -1,4 +1,4 @@
-const wordsList = ["ab"]
+const wordsList = ["dog", "headphone", "house", "horse", "telephone"]
 const wrongLetterTag = document.querySelector(".wrong-letter")
 const dollyImgs = ["./imgs/hangman0.png", "./imgs/hangman1.png", "./imgs/hangman2.png", "./imgs/hangman3.png", "./imgs/hangman4.png"]
 const dollyContainer = document.querySelector(".dolly-container")
