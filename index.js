@@ -25,7 +25,7 @@ const timerDisplay = () => {
     timerId = setInterval(() => {
         if (minutesLeft <= 0) {
             clearInterval(timerId);
-            timeoutAlert()
+            showModal("TIME OUT!!", `The secret word was: ${randomWord.join("")}`);
             return;
         }
 
@@ -51,53 +51,25 @@ const letterWrongAlert = (check) => {
     }
 }
 
-const congratulationsWin = () => {
-    
-    const mainContainer = document.querySelector("body")
-    const congratTag = document.createElement("h2")
-    const wordTag = document.createElement("h3")
-    const buttonOk = document.createElement("button")
+const showModal = (title, message) => {
+    const mainContainer = document.querySelector("body");
 
-    modalsDiv.innerHTML = ""
-    modalsDiv.classList = "modal-congratulations"
-    congratTag.innerHTML = "YOU WIN!!"
-    wordTag.innerHTML = `The secret word is: ${randomWord.join("")}`
-    
-    buttonOk.innerHTML = "Acept"
-    buttonOk.addEventListener("click", () => {
-        modalsDiv.remove()
-    })
-    
-    modalsDiv.appendChild(congratTag)
-    modalsDiv.appendChild(wordTag)
-    modalsDiv.appendChild(buttonOk)
-    mainContainer.appendChild(modalsDiv)
-    
+    const modalDiv = document.createElement("div");
+    modalDiv.className = "modal-congratulations";
+
+    const titleTag = document.createElement("h2");
+    titleTag.innerHTML = title;
+
+    const messageTag = document.createElement("h3");
+    messageTag.innerHTML = message;
+
+    const buttonOk = document.createElement("button");
+    buttonOk.innerHTML = "Acept";
+    buttonOk.addEventListener("click", () => modalDiv.remove());
+
+    modalDiv.append(titleTag, messageTag, buttonOk);
+    mainContainer.appendChild(modalDiv);
 }
-
-    const timeoutAlert = () => {
-        
-        const mainContainer = document.querySelector("body")
-        const congratTag = document.createElement("h2")
-        const wordTag = document.createElement("h3")
-        const buttonOk = document.createElement("button")
-
-        modalsDiv.innerHTML = ""
-        modalsDiv.classList = "modal-congratulations"
-        congratTag.innerHTML = "TIME OUT!!"
-        wordTag.innerHTML = `The secret word was: ${randomWord.join("")}`
-        
-        buttonOk.innerHTML = "Acept"
-        buttonOk.addEventListener("click", () => {
-            modalsDiv.remove()
-        })
-        
-        modalsDiv.appendChild(congratTag)
-        modalsDiv.appendChild(wordTag)
-        modalsDiv.appendChild(buttonOk)
-        mainContainer.appendChild(modalsDiv)
-        
-    }
 
 const insertDolly = (chances) => {
   dollyContainer.innerHTML = ""
@@ -157,7 +129,6 @@ const unHiddenWord = (letter, word, hiddenWord) => {
     return partialWord
 }
 
-
 const checkWin = (word, partialWord) => {
     if (
         word.length === partialWord.length &&
@@ -165,7 +136,7 @@ const checkWin = (word, partialWord) => {
     ) {
         minutesLeft = 0
         buttonLetters.forEach((button) => button.disabled = true)
-        congratulationsWin(word)
+        showModal("YOU WON!", `The secret word is :${randomWord}` )
         return true
     }
     return false
@@ -177,6 +148,7 @@ const checkLifes = (lifes, word) => {
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
         wordInput.value = word.join("")
+        showModal("YOU LOSE!", `The secret word is :${randomWord}` )
         return true
     }
     
@@ -191,8 +163,7 @@ const initGame = () => {
     timerDisplay();
     insertDolly(numberOfChances);
 
-    if (checkLifes(numberOfChances, randomWord)) return;
-
+    
     wordInput.value = hiddenWord;
 
     buttonLetters.forEach((letter) => {
@@ -200,11 +171,12 @@ const initGame = () => {
             const selectedLetter = event.target.innerText.toLowerCase();
             hiddenWord = unHiddenWord(selectedLetter, randomWord, hiddenWord);
             wordInput.value = hiddenWord.join(" ");
-
+            
             buttonLetters.forEach(buton => {
                 if (buton.innerText === event.target.innerText) buton.disabled = true;
             });
-
+            
+            if (checkLifes(numberOfChances, randomWord)) return;
             if (checkWin(randomWord, hiddenWord)) return;
         });
     });
