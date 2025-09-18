@@ -25,6 +25,8 @@ const timerDisplay = () => {
     timerId = setInterval(() => {
         if (minutesLeft <= 0) {
             clearInterval(timerId);
+            buttonLetters.forEach((button) => button.disabled = true)
+            wordInput.value = randomWord.join(" ")
             showModal("TIME OUT!!", `The secret word was: ${randomWord.join("")}`);
             return;
         }
@@ -52,10 +54,8 @@ const letterWrongAlert = (check) => {
 }
 
 const showModal = (title, message) => {
-    const mainContainer = document.querySelector("body");
-
-    const modalDiv = document.createElement("div");
-    modalDiv.className = "modal-congratulations";
+    modalsDiv.innerHTML = ""; 
+    modalsDiv.className = "modal-congratulations";
 
     const titleTag = document.createElement("h2");
     titleTag.innerHTML = title;
@@ -65,11 +65,14 @@ const showModal = (title, message) => {
 
     const buttonOk = document.createElement("button");
     buttonOk.innerHTML = "Acept";
-    buttonOk.addEventListener("click", () => modalDiv.remove());
+    buttonOk.addEventListener("click", () => modalsDiv.remove());
 
-    modalDiv.append(titleTag, messageTag, buttonOk);
-    mainContainer.appendChild(modalDiv);
-}
+    modalsDiv.append(titleTag, messageTag, buttonOk);
+
+    if (!document.body.contains(modalsDiv)) {
+        document.body.appendChild(modalsDiv);
+    }
+};
 
 const insertDolly = (chances) => {
   dollyContainer.innerHTML = ""
@@ -123,7 +126,7 @@ const unHiddenWord = (letter, word, hiddenWord) => {
     }
 
     if (indexsLetter.length > 0) {
-        minutesLeft += 10
+        minutesLeft += 5
     }
 
     return partialWord
@@ -134,9 +137,9 @@ const checkWin = (word, partialWord) => {
         word.length === partialWord.length &&
         word.every((character, index) => character === partialWord[index])
     ) {
-        minutesLeft = 0
+        clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
-        showModal("YOU WON!", `The secret word is :${randomWord}` )
+        showModal("YOU WON!", `The secret word is :${randomWord.join("")}` )
         return true
     }
     return false
@@ -147,8 +150,8 @@ const checkLifes = (lifes, word) => {
     if(lifes === 0){
         clearInterval(timerId)
         buttonLetters.forEach((button) => button.disabled = true)
-        wordInput.value = word.join("")
-        showModal("YOU LOSE!", `The secret word is :${randomWord}` )
+        wordInput.value = word.join()
+        showModal("YOU LOSE!", `The secret word is :${randomWord.join("")}` )
         return true
     }
     
@@ -164,7 +167,7 @@ const initGame = () => {
     insertDolly(numberOfChances);
 
     
-    wordInput.value = hiddenWord;
+    wordInput.value = hiddenWord.join(" ");
 
     buttonLetters.forEach((letter) => {
         letter.addEventListener("click", (event) => {
@@ -176,19 +179,22 @@ const initGame = () => {
                 if (buton.innerText === event.target.innerText) buton.disabled = true;
             });
             
-            if (checkLifes(numberOfChances, randomWord)) return;
             if (checkWin(randomWord, hiddenWord)) return;
+            if (checkLifes(numberOfChances, randomWord)) return;
         });
     });
 };
 
 const restartGame = () => {
+    
     if (timerId) clearInterval(timerId);
 
+    modalsDiv.innerHTML = ""
     minutesLeft = 10;
     numberOfChances = 4;
     insertDolly(numberOfChances);
 
+    wrongLetterTag.innerHTML = ""
     randomWord = generateRandomWord(wordsList);
     letterUsed = [];
     westedWordsInput.value = letterUsed;
